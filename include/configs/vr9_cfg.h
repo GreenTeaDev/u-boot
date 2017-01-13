@@ -423,6 +423,12 @@
 
 #endif /*CONFIG_FIRMWARE_IN_ROOTFS*/
 
+#ifndef IFX_CFG_FLASH_DDR_CFG_START_ADDR
+#define IFX_CFG_FLASH_DDR_CFG_START_ADDR      0xB000FFE8
+#define IFX_CFG_FLASH_DDR_CFG_SIZE            24
+#define IFX_CFG_FLASH_DDR_CFG_END_ADDR        0xB000FFFF
+#endif
+
 
 #endif /*CONFIG_BOOT_FROM_NOR*/
 
@@ -442,6 +448,8 @@
 #define IFX_CONFIG_FLASH_SIZE 4
 #elif CONFIG_SPI_FLASH_8M
 #define IFX_CONFIG_FLASH_SIZE 8
+#elif CONFIG_SPI_FLASH_16M
+#define IFX_CONFIG_FLASH_SIZE 16
 #endif
 
 #ifndef IFX_CONFIG_FLASH_SIZE
@@ -878,11 +886,56 @@
 
   #define IFX_CFG_FLASH_END_ADDR                          0x007FFFFF
 
+#elif (IFX_CONFIG_FLASH_SIZE == 16)
+#define IFX_CFG_FLASH_PARTITIONS_INFO                                   \
+        "part0_begin=0x00000000\0"                                      \
+        "part1_begin=0x00020000\0"                                      \
+        "part2_begin=0x00FD0000\0"                                      \
+        "total_part=3\0"
+
+#define IFX_CFG_FLASH_DATA_BLOCKS_INFO                                  \
+        "data_block0=" IFX_CFG_FLASH_UBOOT_IMAGE_BLOCK_NAME "\0"        \
+        "data_block1=" IFX_CFG_FLASH_KERNEL_IMAGE_BLOCK_NAME "\0"       \
+        "data_block2=" IFX_CFG_FLASH_ROOTFS_IMAGE_BLOCK_NAME "\0"       \
+        "data_block3=" IFX_CFG_FLASH_UBOOT_CFG_BLOCK_NAME "\0"          \
+        "data_block4=" IFX_CFG_FLASH_CALIBRATION_CFG_BLOCK_NAME "\0"    \
+        "total_db=5\0"
+
+  #define IFX_CFG_FLASH_UBOOT_IMAGE_BLOCK_NAME            "uboot"
+  #define IFX_CFG_FLASH_UBOOT_IMAGE_START_ADDR            0x00000000
+  #define IFX_CFG_FLASH_UBOOT_IMAGE_SIZE                  0
+  #define IFX_CFG_FLASH_UBOOT_IMAGE_MTDBLOCK_NAME         "/dev/mtdblock0"
+
+  #define IFX_CFG_FLASH_KERNEL_IMAGE_BLOCK_NAME           "kernel"
+  #define IFX_CFG_FLASH_KERNEL_IMAGE_START_ADDR           0x0020000
+  #define IFX_CFG_FLASH_KERNEL_IMAGE_SIZE                 0
+
+  #define IFX_CFG_FLASH_UBOOT_CFG_BLOCK_NAME              "ubootconfig"
+  #define IFX_CFG_FLASH_UBOOT_CFG_START_ADDR              0x00FEDFFF
+  #define IFX_CFG_FLASH_UBOOT_CFG_SIZE                    0x2000
+  #define IFX_CFG_FLASH_UBOOT_CFG_END_ADDR                0x00FEFFFF
+  
+  #define IFX_CFG_FLASH_CALIBRATION_CFG_BLOCK_NAME	  "calibration"
+  #define IFX_CFG_FLASH_CALIBRATION_CFG_START_ADDR	  0x00FD0000
+  #define IFX_CFG_FLASH_CALIBRATION_CFG_SIZE		  0x30000
+
+  #define IFX_CFG_FLASH_DDR_CFG_START_ADDR      	  0x00FE0000
+  #define IFX_CFG_FLASH_DDR_CFG_SIZE                      24
+  #define IFX_CFG_FLASH_DDR_CFG_END_ADDR        	  0x00FEFFFF
+
+  #define IFX_CFG_FLASH_END_ADDR                          0x01000000
+
 #else
   #error "ERROR!! Define flash size first!"
 #endif
 
 #endif /*CONFIG_FIRMWARE_IN_ROOTFS*/
+
+#ifndef IFX_CFG_FLASH_DDR_CFG_START_ADDR
+#define IFX_CFG_FLASH_DDR_CFG_START_ADDR      0x007E0000
+#define IFX_CFG_FLASH_DDR_CFG_SIZE            24
+#define IFX_CFG_FLASH_DDR_CFG_END_ADDR        0x007EFFFF
+#endif
 
 
 #endif /*CONFIG_BOOT_FROM_SPI*/
@@ -1063,7 +1116,7 @@
         "part0_begin=0x00000000\0"                                      \
         "part1_begin=0x00040000\0"                                      \
         "part2_begin=0x002C0000\0"                                      \
-        "part3_begin=0x06C40000\0"                                      \
+        "part3_begin=0x07000000\0"                                      \
         "part4_begin=0x07040000\0"                                      \
         "part5_begin=0x07080000\0"                                      \
         "total_part=6\0"
@@ -1089,12 +1142,12 @@
 
   #define IFX_CFG_FLASH_ROOTFS_IMAGE_BLOCK_NAME           "rootfs"
   #define IFX_CFG_FLASH_ROOTFS_IMAGE_START_ADDR           0x002C0000
-  #define IFX_CFG_FLASH_ROOTFS_IMAGE_SIZE                 0x6980000
+  #define IFX_CFG_FLASH_ROOTFS_IMAGE_SIZE                 0x06D40000
   #define IFX_CFG_FLASH_ROOTFS_IMAGE_MTDBLOCK_NAME        "/dev/mtdblock2"
 
   #define IFX_CFG_FLASH_SYSTEM_CFG_BLOCK_NAME             "sysconfig"
-  #define IFX_CFG_FLASH_SYSTEM_CFG_START_ADDR             0x06C40000
-  #define IFX_CFG_FLASH_SYSTEM_CFG_SIZE                   0x400000
+  #define IFX_CFG_FLASH_SYSTEM_CFG_START_ADDR             0x7000000
+  #define IFX_CFG_FLASH_SYSTEM_CFG_SIZE                   0x40000
   #define IFX_CFG_FLASH_SYSTEM_CFG_END_ADDR               0x0703FFFF
   #define IFX_CFG_FLASH_SYSTEM_CFG_MTDBLOCK_NAME          "/dev/mtdblock3"
 
@@ -1332,7 +1385,7 @@
         "part1_begin=0x00040000\0"                                      \
         "part2_begin=0x000C0000\0"                                      \
         "part3_begin=0x002C0000\0"                                      \
-        "part4_begin=0x06C40000\0"                                      \
+        "part4_begin=0x07000000\0"                                      \
         "part5_begin=0x07040000\0"                                      \
         "part6_begin=0x07080000\0"                                      \
         "total_part=7\0"
@@ -1364,12 +1417,12 @@
 
   #define IFX_CFG_FLASH_ROOTFS_IMAGE_BLOCK_NAME           "rootfs"
   #define IFX_CFG_FLASH_ROOTFS_IMAGE_START_ADDR           0x002C0000
-  #define IFX_CFG_FLASH_ROOTFS_IMAGE_SIZE                 0x6980000
+  #define IFX_CFG_FLASH_ROOTFS_IMAGE_SIZE                 0x06D40000
   #define IFX_CFG_FLASH_ROOTFS_IMAGE_MTDBLOCK_NAME        "/dev/mtdblock3"
 
   #define IFX_CFG_FLASH_SYSTEM_CFG_BLOCK_NAME             "sysconfig"
-  #define IFX_CFG_FLASH_SYSTEM_CFG_START_ADDR             0x06C40000
-  #define IFX_CFG_FLASH_SYSTEM_CFG_SIZE                   0x400000
+  #define IFX_CFG_FLASH_SYSTEM_CFG_START_ADDR             0x07000000
+  #define IFX_CFG_FLASH_SYSTEM_CFG_SIZE                   0x40000
   #define IFX_CFG_FLASH_SYSTEM_CFG_END_ADDR               0x0703FFFF
   #define IFX_CFG_FLASH_SYSTEM_CFG_MTDBLOCK_NAME          "/dev/mtdblock4"
 
@@ -1448,8 +1501,13 @@
 
 #endif /*CONFIG_FIRMWARE_IN_ROOTFS*/
 
+#ifndef IFX_CFG_FLASH_DDR_CFG_START_ADDR
+#define IFX_CFG_FLASH_DDR_CFG_START_ADDR      0x00003FE8
+#define IFX_CFG_FLASH_DDR_CFG_SIZE            24
+#define IFX_CFG_FLASH_DDR_CFG_END_ADDR        0x00003FFF
+#endif
 
-#endif /*CONFIG_BOOT_FROM_SPI*/
+#endif /*CONFIG_BOOT_FROM_NAND*/
 
 
 /* End of Board specific configurations
