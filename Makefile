@@ -3767,6 +3767,7 @@ clean:
 	@rm -f sfddr sfddr.bin sfddr.map board/$(BOARD)/sfddr sfpreload sfpreload.img
 	@rm -f u-boot.gphy.lq dummy
 	@rm -f ether ether.bin ether.srec *.asc
+	@rm -f ddr_settings
 
 clobber:	clean
 	@find $(OBJTREE) -type f \( -name .depend \
