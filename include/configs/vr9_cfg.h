@@ -890,8 +890,9 @@
 #define IFX_CFG_FLASH_PARTITIONS_INFO                                   \
         "part0_begin=0x00000000\0"                                      \
         "part1_begin=0x00020000\0"                                      \
+        "part1_begin=0x00FCE000\0"                                      \
         "part2_begin=0x00FD0000\0"                                      \
-        "total_part=3\0"
+        "total_part=4\0"
 
 #define IFX_CFG_FLASH_DATA_BLOCKS_INFO                                  \
         "data_block0=" IFX_CFG_FLASH_UBOOT_IMAGE_BLOCK_NAME "\0"        \
@@ -911,7 +912,7 @@
   #define IFX_CFG_FLASH_KERNEL_IMAGE_SIZE                 0
 
   #define IFX_CFG_FLASH_UBOOT_CFG_BLOCK_NAME              "ubootconfig"
-  #define IFX_CFG_FLASH_UBOOT_CFG_START_ADDR              0x00FEDFFF
+  #define IFX_CFG_FLASH_UBOOT_CFG_START_ADDR              0x00FCE000
   #define IFX_CFG_FLASH_UBOOT_CFG_SIZE                    0x2000
   #define IFX_CFG_FLASH_UBOOT_CFG_END_ADDR                0x00FEFFFF
   
