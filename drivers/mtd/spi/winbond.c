@@ -29,6 +29,7 @@
 #define WINBOND_ID_W25X64		0x3017
 
 #define WINBOND_ID_W25Q64		0x4017	/* added by yangxv, 2011.03 */
+#define WINBOND_ID_W25Q128		0x4018	/* added by hitech95, 2017.01 */
 
 #define WINBOND_SR_WIP		(1 << 0)	/* Write-in-Progress */
 
@@ -38,7 +39,7 @@ struct winbond_spi_flash_params {
 	uint8_t		l2_page_size;
 	uint16_t	pages_per_sector;
 	uint16_t	sectors_per_block;
-	uint8_t		nr_blocks;
+	uint16_t	nr_blocks;
 	const char	*name;
 };
 
@@ -87,6 +88,16 @@ static const struct winbond_spi_flash_params winbond_spi_flash_table[] = {
 		.sectors_per_block	= 16,
 		.nr_blocks		= 128,
 		.name			= "W25Q64",
+	},
+	/* end added */
+	/* added by hitech95, 2017.01 */
+	{
+		.id 		= WINBOND_ID_W25Q128,
+		.l2_page_size		= 8,
+		.pages_per_sector	= 16,
+		.sectors_per_block	= 16,
+		.nr_blocks		= 256,
+		.name			= "W25Q128",
 	},
 	/* end added */
 };
