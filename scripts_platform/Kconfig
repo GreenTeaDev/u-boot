@@ -222,6 +222,9 @@ choice
 	 depends on BOOT_FROM_SPI
 	 default SPI_FLASH_4M
 
+config SPI_FLASH_16M
+     bool "16M"
+
 config SPI_FLASH_8M
      bool "8M"
 
@@ -255,6 +258,14 @@ config SPI_FLASH_SPANSION
 
 config SPI_FLASH_MXIC
         bool "MXIC SFLASH SUPPORT"
+    depends on SPI_FLASH
+
+config SPI_FLASH_WINBOND
+        bool "WINBOND SFLASH SUPPORT"
+    depends on SPI_FLASH
+
+config CONFIG_SPI_FLASH_EON
+        bool "EON SFLASH SUPPORT"
     depends on SPI_FLASH
 
 config LANTIQ_SPI
